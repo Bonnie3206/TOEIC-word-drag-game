@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		434339052622BCA000FFC11F /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434339042622BCA000FFC11F /* TextView.swift */; };
+		4343390D2622DC7900FFC11F /* endPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4343390C2622DC7900FFC11F /* endPageView.swift */; };
 		434B82A8261D55BA0019BEDC /* iOS_hw3_1App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434B82A7261D55BA0019BEDC /* iOS_hw3_1App.swift */; };
 		434B82AA261D55BA0019BEDC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434B82A9261D55BA0019BEDC /* ContentView.swift */; };
 		434B82AC261D55BD0019BEDC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 434B82AB261D55BD0019BEDC /* Assets.xcassets */; };
@@ -16,6 +18,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		434339042622BCA000FFC11F /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
+		4343390C2622DC7900FFC11F /* endPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = endPageView.swift; sourceTree = "<group>"; };
 		434B82A4261D55BA0019BEDC /* iOS_hw3_1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOS_hw3_1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		434B82A7261D55BA0019BEDC /* iOS_hw3_1App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOS_hw3_1App.swift; sourceTree = "<group>"; };
 		434B82A9261D55BA0019BEDC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -60,6 +64,8 @@
 				434B82A7261D55BA0019BEDC /* iOS_hw3_1App.swift */,
 				434B82A9261D55BA0019BEDC /* ContentView.swift */,
 				43B688592620386F0081BF89 /* Question.swift */,
+				434339042622BCA000FFC11F /* TextView.swift */,
+				4343390C2622DC7900FFC11F /* endPageView.swift */,
 				434B82AB261D55BD0019BEDC /* Assets.xcassets */,
 				434B82B0261D55BD0019BEDC /* Info.plist */,
 				434B82AD261D55BD0019BEDC /* Preview Content */,
@@ -147,7 +153,9 @@
 				43B6885A2620386F0081BF89 /* Question.swift in Sources */,
 				434B82AA261D55BA0019BEDC /* ContentView.swift in Sources */,
 				43B6885D2622172D0081BF89 /* SwiftUIView.swift in Sources */,
+				4343390D2622DC7900FFC11F /* endPageView.swift in Sources */,
 				434B82A8261D55BA0019BEDC /* iOS_hw3_1App.swift in Sources */,
+				434339052622BCA000FFC11F /* TextView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

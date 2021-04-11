@@ -11,32 +11,8 @@
  */
 import SwiftUI
 
-class GameTimer: ObservableObject {
-    private var frequency = 1.0
-    private var timer: Timer?
-    private var startDate: Date?
-    @Published var secondsElapsed = 0
-    func start() {
-        secondsElapsed = 0
-        startDate = Date()
-        timer = Timer.scheduledTimer(withTimeInterval: frequency, repeats: true)
-    { timer in
-            if let startDate = self.startDate {
-                self.secondsElapsed = Int(timer.fireDate.timeIntervalSince1970 -
-    startDate.timeIntervalSince1970)
-            }
-        }
-    }
-    func stop() {
-        timer?.invalidate()
-        timer = nil
-    }
+struct ContentView2: View {
     
-}
-
-struct ContentView: View {
-    
-    @StateObject var gameTimer = GameTimer()
     @State private var num = 0
     @State private var offsets = [CGSize.zero]
     @State private var newPosition = [CGSize.zero]
@@ -50,15 +26,10 @@ struct ContentView: View {
     
     @State private var start = false
     @State private var sigleMatch = [Bool]()
-    @State private var endPage = false
-    @State private var ifTime = 0
     
     
     func initialGame(){//生成題目跟答案
         answers.removeAll()
-        gameTimer.start()
-        
-        
         for i in 0..<vocabulary.count{
             
             answers.append(vocabulary[i].map(String.init))//拆開字母
@@ -82,7 +53,19 @@ struct ContentView: View {
             print(questions[i+1])//append的字從陣列1??????????
         }
     }
-
+    
+    /*
+    func ShowGame(number:Int){
+        VStack{
+            HStack{
+                ForEach(0..<questions[num].count, id: \.self){
+                    index in
+                    Text(questions[1][index])
+                }
+            }
+        }
+    }
+ */
     var body: some View {
       ZStack{
         
@@ -93,6 +76,9 @@ struct ContentView: View {
           
         
         VStack{
+            
+            ForEach(0..<questions[num].count, id: \.self){
+            }
             
             if start{
                 HStack{
@@ -110,20 +96,15 @@ struct ContentView: View {
                                         .onAppear(perform: {
                                             answerFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
                                             answerFrame[index]=(geometry.frame(in: .global))
-                                            print(answerFrame[index])/////
+                                            print(answerFrame[index])
                                         })
                                 })
                              )
                     }
                 }
-                HStack{
-                    
-                    Image("食物\(num)")
-                        .scaleEffect(0.5)
-                        .frame(width:200,height:200)
-                    Text("\(gameTimer.secondsElapsed)")
-                }
-                
+                Image("食物\(num)")
+                    .scaleEffect(0.5)
+                    .frame(width:200,height:200)
                 HStack{
                     ForEach(0..<questions[num].count, id: \.self){
                         
@@ -154,7 +135,6 @@ struct ContentView: View {
                                                 print(questionFrame[index])
                                                 print(answerFrame[index])
                                             }*/
- 
                                             //print(questionFrame[index])
 
                                         })
@@ -171,33 +151,19 @@ struct ContentView: View {
 
                 
             }
-            HStack{
-                Button(action:{
-                    initialGame()
-                    start = true
-                    num+=1
-                    offsets = [CGSize](repeating: CGSize.zero, count: questions[num].count+1)
-                    newPosition = [CGSize](repeating: CGSize.zero, count: questions[num].count+1)
-                    
-                    
-                }, label: {Text("開始計時")})
-                Button(action: {
-                    ifTime = gameTimer.secondsElapsed
-                    if ifTime > 5{
-                        endPage = true
-                    }
-                    num+=1
-                    start = true
-                    offsets = [CGSize](repeating: CGSize.zero, count: questions[num].count+1)
-                    newPosition = [CGSize](repeating: CGSize.zero, count: questions[num].count+1)
-                    
-                    
+            
+                        
+        
+            Button(action: {
+                initialGame()
+                num+=1
+                start = true
+                offsets = [CGSize](repeating: CGSize.zero, count: questions[num].count+1)
+                newPosition = [CGSize](repeating: CGSize.zero, count: questions[num].count+1)
                 
-                }, label: {Text("再來")})
-                .sheet(isPresented: $endPage, content:{
-               endPageView()
-                })
-            }
+                
+            
+            }, label: {Text("再來")})
         }
         
           
@@ -215,9 +181,9 @@ struct ContentView: View {
    }
 }
  */
-struct ContentView_Previews: PreviewProvider {
+struct ContentView2_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView2()
             .previewLayout(.fixed(width: 844, height: 390))
             .previewDevice("iPhone 11")
     }
