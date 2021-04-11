@@ -10,6 +10,7 @@
  3. 依據index賦予每個空個應該有的值(foreach)
  */
 import SwiftUI
+import AVFoundation
 
 class GameTimer: ObservableObject {
     private var frequency = 1.0
@@ -26,16 +27,32 @@ class GameTimer: ObservableObject {
     startDate.timeIntervalSince1970)
             }
         }
+        //if timer > 50 ???????????????
     }
     func stop() {
         timer?.invalidate()
         timer = nil
+    }
+    func update(){
+        let totalTime = 60
+        secondsElapsed = 0
+        startDate = Date()
+        timer = Timer.scheduledTimer(withTimeInterval: frequency, repeats: true)
+    { timer in
+            if let startDate = self.startDate {
+                self.secondsElapsed = Int(timer.fireDate.timeIntervalSince1970 -
+    startDate.timeIntervalSince1970)
+            }
+        }
+        
     }
     
 }
 
 struct ContentView: View {
     
+    @AppStorage("username") var username : String = "Anonymous"
+    @AppStorage("") var Mymoney : String = "null"
     @StateObject var gameTimer = GameTimer()
     @State private var num = 0
     @State private var offsets = [CGSize.zero]
@@ -82,6 +99,13 @@ struct ContentView: View {
             print(questions[i+1])//append的字從陣列1??????????
         }
     }
+    func speak(speakWord:String){
+        
+        let utterance =  AVSpeechUtterance(string: speakWord)
+        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+        let synthesizer = AVSpeechSynthesizer()
+        synthesizer.speak(utterance)
+    }
 
     var body: some View {
       ZStack{
@@ -121,7 +145,13 @@ struct ContentView: View {
                     Image("食物\(num)")
                         .scaleEffect(0.5)
                         .frame(width:200,height:200)
-                    Text("\(gameTimer.secondsElapsed)")
+                    if gameTimer.secondsElapsed < 5{
+                        Text("\(gameTimer.secondsElapsed)")
+                    }else{
+                        Text("end")
+                        //endPage = true
+                    }
+                    
                 }
                 
                 HStack{
@@ -149,6 +179,7 @@ struct ContentView: View {
                                         .onAppear(perform: {
                                             questionFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
                                             questionFrame[index]=(geometry.frame(in: .global))
+                                           
                                             /*if questionFrame[index].intersects(answerFrame[index]){
                                                 print("ya\(index)")
                                                 print(questionFrame[index])
@@ -174,6 +205,7 @@ struct ContentView: View {
             HStack{
                 Button(action:{
                     initialGame()
+                    speak(speakWord: "開始")
                     start = true
                     num+=1
                     offsets = [CGSize](repeating: CGSize.zero, count: questions[num].count+1)
@@ -182,10 +214,11 @@ struct ContentView: View {
                     
                 }, label: {Text("開始計時")})
                 Button(action: {
+                    /*
                     ifTime = gameTimer.secondsElapsed
                     if ifTime > 5{
                         endPage = true
-                    }
+                    }*/
                     num+=1
                     start = true
                     offsets = [CGSize](repeating: CGSize.zero, count: questions[num].count+1)
@@ -207,14 +240,7 @@ struct ContentView: View {
   
   
 }
-/*
-struct ContentView: View {
-  @State private var showAlert = false
-  var body: some View {
-     
-   }
-}
- */
+
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
