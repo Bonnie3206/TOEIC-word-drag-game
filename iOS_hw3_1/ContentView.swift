@@ -49,6 +49,7 @@ struct ContentView: View {
     //@State private var ShowQuestion = [String]()
     @State private var questions = [[""]]
     @State private var questionNumber = 0
+    //@State private var answerFrame: [CGRect.zero] = [1, 2, 3]
     @State private var answerFrame = [CGRect.zero]
     @State private var questionFrame = [CGRect.zero]
     
@@ -122,9 +123,10 @@ struct ContentView: View {
                                 GeometryReader(content: { geometry in
                                     Color.clear
                                         .onAppear(perform: {
-                                            answerFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
+                                            //answerFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
+                                            //print(answerFrame[index])
                                             answerFrame[index]=(geometry.frame(in: .global))
-                                            print(answerFrame[index])/////
+                                            //print(answerFrame[index])/////
                                         })
                                 })
                              )
@@ -171,31 +173,23 @@ struct ContentView: View {
                                         .onEnded({value in newPosition[index] = offsets[index]
                                             speak(speakWord: questions[num][index])
                                             if questionFrame[index].intersects(answerFrame[index]){
-                                                print("ya\(index)")
-                                                print(questionFrame[index])
-                                                print(answerFrame[index])
+                                                //print("ya\(index)")
+                                                //print(questionFrame[index])
+                                               // print(answerFrame[index])
                                             }
-                                        }))//
+                                        }))
                             .overlay(
                                 GeometryReader(content: { geometry in
                                     Color.clear
                                         .onAppear(perform: {
-                                            questionFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
+                                            //questionFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
+                                            print(questionFrame[index])
                                             questionFrame[index]=(geometry.frame(in: .global))
+                                            print(questionFrame[index])
                                            
-                                            /**/
- 
-                                            //print(questionFrame[index])
-
                                         })
                                 })
-                            )
-                        
-                        
-                    
-                        
-                            
-                        
+                            )//
                     }
                 }
 
@@ -207,6 +201,8 @@ struct ContentView: View {
                     speak(speakWord: vocabulary[num])
                     start = true
                     num+=1
+                    answerFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
+                    questionFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
                     offsets = [CGSize](repeating: CGSize.zero, count: questions[num].count+1)
                     newPosition = [CGSize](repeating: CGSize.zero, count: questions[num].count+1)
                     
@@ -221,6 +217,8 @@ struct ContentView: View {
                     speak(speakWord: vocabulary[num])
                     num+=1
                     start = true
+                    answerFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
+                    questionFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
                     offsets = [CGSize](repeating: CGSize.zero, count: questions[num].count+1)
                     newPosition = [CGSize](repeating: CGSize.zero, count: questions[num].count+1)
                     
@@ -232,9 +230,7 @@ struct ContentView: View {
                 })
             }
         }
-        
-          
-        
+
       }
      }
   
