@@ -8,8 +8,23 @@
 import SwiftUI
 
 struct endPageView: View {
+    @State private var firstName = ""
+    @State private var lastName = ""
+        
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List {
+            TextField("First name", text: $firstName)
+            TextField("Last name", text: $lastName)
+            Button(action: {
+                
+            }) {
+                HStack {
+                    Image(systemName: "plus.circle.fill")
+                    Text("add phone")
+                }
+            }
+        }
+        .listStyle(GroupedListStyle())
     }
 }
 

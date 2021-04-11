@@ -33,26 +33,13 @@ class GameTimer: ObservableObject {
         timer?.invalidate()
         timer = nil
     }
-    func update(){
-        let totalTime = 60
-        secondsElapsed = 0
-        startDate = Date()
-        timer = Timer.scheduledTimer(withTimeInterval: frequency, repeats: true)
-    { timer in
-            if let startDate = self.startDate {
-                self.secondsElapsed = Int(timer.fireDate.timeIntervalSince1970 -
-    startDate.timeIntervalSince1970)
-            }
-        }
-        
-    }
+
     
 }
 
 struct ContentView: View {
     
-    @AppStorage("username") var username : String = "Anonymous"
-    @AppStorage("") var Mymoney : String = "null"
+    
     @StateObject var gameTimer = GameTimer()
     @State private var num = 0
     @State private var offsets = [CGSize.zero]
@@ -124,6 +111,9 @@ struct ContentView: View {
                         index in
                         
                         Image("answerIcon")
+                            .onLongPressGesture{
+                                speak(speakWord: questions[num][index])
+                            }//其實長按有解答嘿嘿
                             .frame(width:10,height:10)
                             .padding(30)
                             //第幾個字母的位移
@@ -142,9 +132,12 @@ struct ContentView: View {
                 }
                 HStack{
                     
-                    Image("食物\(num)")
+                    Image("食物\(num)")//////為何是從1開始
                         .scaleEffect(0.5)
                         .frame(width:200,height:200)
+                        .onTapGesture{
+                            speak(speakWord: vocabulary[num-1])
+                        }
                     if gameTimer.secondsElapsed < 5{
                         Text("\(gameTimer.secondsElapsed)")
                     }else{
@@ -160,19 +153,29 @@ struct ContentView: View {
                         index in
                         
                         Image(questions[num][index])
+                            
                             .frame(width:50,height:50)
                             //第幾個字母的位移
                             .scaleEffect(0.5)
                             .offset(offsets[index])
                             .gesture(DragGesture()
-                                        .onChanged({value in
+                                        .onChanged(
+                                            {value in
+                                            
                                             offsets[index].width = newPosition[index].width + value.translation.width
                                             //print(offsets[index].width)
                                             offsets[index].height = newPosition[index].height + value.translation.height
                                             //print(offsets[index].height)
                                             
                                         })
-                                        .onEnded({value in newPosition[index] = offsets[index]}))//
+                                        .onEnded({value in newPosition[index] = offsets[index]
+                                            speak(speakWord: questions[num][index])
+                                            if questionFrame[index].intersects(answerFrame[index]){
+                                                print("ya\(index)")
+                                                print(questionFrame[index])
+                                                print(answerFrame[index])
+                                            }
+                                        }))//
                             .overlay(
                                 GeometryReader(content: { geometry in
                                     Color.clear
@@ -180,11 +183,7 @@ struct ContentView: View {
                                             questionFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
                                             questionFrame[index]=(geometry.frame(in: .global))
                                            
-                                            /*if questionFrame[index].intersects(answerFrame[index]){
-                                                print("ya\(index)")
-                                                print(questionFrame[index])
-                                                print(answerFrame[index])
-                                            }*/
+                                            /**/
  
                                             //print(questionFrame[index])
 
@@ -205,7 +204,7 @@ struct ContentView: View {
             HStack{
                 Button(action:{
                     initialGame()
-                    speak(speakWord: "開始")
+                    speak(speakWord: vocabulary[num])
                     start = true
                     num+=1
                     offsets = [CGSize](repeating: CGSize.zero, count: questions[num].count+1)
@@ -214,11 +213,12 @@ struct ContentView: View {
                     
                 }, label: {Text("開始計時")})
                 Button(action: {
-                    /*
+                    
                     ifTime = gameTimer.secondsElapsed
                     if ifTime > 5{
                         endPage = true
-                    }*/
+                    }
+                    speak(speakWord: vocabulary[num])
                     num+=1
                     start = true
                     offsets = [CGSize](repeating: CGSize.zero, count: questions[num].count+1)

@@ -6,10 +6,14 @@
 //
 
 import SwiftUI
+import AVFoundation
+
 
 struct SwiftUIView: View {
+    
     @State var showGamePage = false
     var body: some View {
+        
         ZStack{
             Image("背景1")
                 .scaleEffect(0.70)
