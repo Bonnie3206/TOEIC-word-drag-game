@@ -130,7 +130,7 @@ struct ContentView: View {
     }
     func moveX(qus:CGFloat,ans:CGFloat) -> CGFloat{
         
-        return ans
+        return -(ans-qus)
         
     }
     func moveY(qus:CGFloat,ans:CGFloat) -> CGFloat{
