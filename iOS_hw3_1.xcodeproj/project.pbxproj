@@ -7,10 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		432C38B126236A2A00BAAEE8 /* timerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432C38B026236A2A00BAAEE8 /* timerView.swift */; };
+		432C38B426236CB400BAAEE8 /* GameObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432C38B326236CB400BAAEE8 /* GameObject.swift */; };
+		432C38B72625BDBB00BAAEE8 /* SelectionObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432C38B62625BDBB00BAAEE8 /* SelectionObject.swift */; };
 		434339052622BCA000FFC11F /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434339042622BCA000FFC11F /* TextView.swift */; };
 		4343390D2622DC7900FFC11F /* endPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4343390C2622DC7900FFC11F /* endPageView.swift */; };
 		434339102622FA3300FFC11F /* SwiftUI2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4343390F2622FA3300FFC11F /* SwiftUI2View.swift */; };
 		4343391326230C5500FFC11F /* PuiPui.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4343391226230C5500FFC11F /* PuiPui.mp3 */; };
+		434339192623570A00FFC11F /* AVplayerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434339182623570A00FFC11F /* AVplayerExtension.swift */; };
+		4343391D2623620200FFC11F /* cute.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4343391C2623620200FFC11F /* cute.mp3 */; };
 		434B82A8261D55BA0019BEDC /* iOS_hw3_1App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434B82A7261D55BA0019BEDC /* iOS_hw3_1App.swift */; };
 		434B82AA261D55BA0019BEDC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434B82A9261D55BA0019BEDC /* ContentView.swift */; };
 		434B82AC261D55BD0019BEDC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 434B82AB261D55BD0019BEDC /* Assets.xcassets */; };
@@ -20,10 +25,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		432C38B026236A2A00BAAEE8 /* timerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = timerView.swift; sourceTree = "<group>"; };
+		432C38B326236CB400BAAEE8 /* GameObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameObject.swift; sourceTree = "<group>"; };
+		432C38B62625BDBB00BAAEE8 /* SelectionObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionObject.swift; sourceTree = "<group>"; };
 		434339042622BCA000FFC11F /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		4343390C2622DC7900FFC11F /* endPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = endPageView.swift; sourceTree = "<group>"; };
 		4343390F2622FA3300FFC11F /* SwiftUI2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUI2View.swift; sourceTree = "<group>"; };
 		4343391226230C5500FFC11F /* PuiPui.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = PuiPui.mp3; sourceTree = "<group>"; };
+		434339182623570A00FFC11F /* AVplayerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVplayerExtension.swift; sourceTree = "<group>"; };
+		4343391C2623620200FFC11F /* cute.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = cute.mp3; sourceTree = "<group>"; };
 		434B82A4261D55BA0019BEDC /* iOS_hw3_1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOS_hw3_1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		434B82A7261D55BA0019BEDC /* iOS_hw3_1App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOS_hw3_1App.swift; sourceTree = "<group>"; };
 		434B82A9261D55BA0019BEDC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -70,8 +80,13 @@
 				4343390F2622FA3300FFC11F /* SwiftUI2View.swift */,
 				43B688592620386F0081BF89 /* Question.swift */,
 				434339042622BCA000FFC11F /* TextView.swift */,
+				4343391C2623620200FFC11F /* cute.mp3 */,
 				4343391226230C5500FFC11F /* PuiPui.mp3 */,
 				4343390C2622DC7900FFC11F /* endPageView.swift */,
+				434339182623570A00FFC11F /* AVplayerExtension.swift */,
+				432C38B326236CB400BAAEE8 /* GameObject.swift */,
+				432C38B62625BDBB00BAAEE8 /* SelectionObject.swift */,
+				432C38B026236A2A00BAAEE8 /* timerView.swift */,
 				434B82AB261D55BD0019BEDC /* Assets.xcassets */,
 				434B82B0261D55BD0019BEDC /* Info.plist */,
 				434B82AD261D55BD0019BEDC /* Preview Content */,
@@ -147,6 +162,7 @@
 				4343391326230C5500FFC11F /* PuiPui.mp3 in Resources */,
 				434B82AF261D55BD0019BEDC /* Preview Assets.xcassets in Resources */,
 				434B82AC261D55BD0019BEDC /* Assets.xcassets in Resources */,
+				4343391D2623620200FFC11F /* cute.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,11 +173,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				432C38B72625BDBB00BAAEE8 /* SelectionObject.swift in Sources */,
 				43B6885A2620386F0081BF89 /* Question.swift in Sources */,
+				432C38B126236A2A00BAAEE8 /* timerView.swift in Sources */,
 				434B82AA261D55BA0019BEDC /* ContentView.swift in Sources */,
 				43B6885D2622172D0081BF89 /* SwiftUIView.swift in Sources */,
+				432C38B426236CB400BAAEE8 /* GameObject.swift in Sources */,
 				4343390D2622DC7900FFC11F /* endPageView.swift in Sources */,
 				434B82A8261D55BA0019BEDC /* iOS_hw3_1App.swift in Sources */,
+				434339192623570A00FFC11F /* AVplayerExtension.swift in Sources */,
 				434339102622FA3300FFC11F /* SwiftUI2View.swift in Sources */,
 				434339052622BCA000FFC11F /* TextView.swift in Sources */,
 			);

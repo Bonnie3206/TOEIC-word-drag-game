@@ -5,14 +5,13 @@
 //  Created by CK on 2021/4/7.
 //
 /*
- 1. 搜集多益單字放入陣列，並給index（index,圖,單字)
- 2. 將單字打散顯示在上方並可以拖曳，根據字數挖空格顯示在下方
- 3. 依據index賦予每個空個應該有的值(foreach)
+ 1. 加入背景音樂後常有斷點
  */
 import SwiftUI
 import AVFoundation
 
 class GameTimer: ObservableObject {
+    
     private var frequency = 1.0
     private var timer: Timer?
     private var startDate: Date?
@@ -34,10 +33,10 @@ class GameTimer: ObservableObject {
         timer = nil
     }
 
-    
 }
 
 struct ContentView: View {
+    
     
     
     @StateObject var gameTimer = GameTimer()
@@ -50,15 +49,50 @@ struct ContentView: View {
     @State private var questions = [[""]]
     @State private var questionNumber = 0
     //@State private var answerFrame: [CGRect.zero] = [1, 2, 3]
-    @State private var answerFrame = [CGRect.zero]
+    @State private var answerFrame = [CGRect.zero]//第一次的絕對位置
     @State private var questionFrame = [CGRect.zero]
+    @State private var nowAnswerFrameX = [CGFloat.zero]//新的絕對位置
+    @State private var nowAnswerFrameY = [CGFloat.zero]
+    @State private var nowQuestionFrameX = [CGFloat.zero]
+    @State private var nowQuestionFrameY = [CGFloat.zero]
+    @State private var correctNum = 0
+    @State private var initailQuestionX = [CGFloat.zero]//一開始的絕對位置
+    @State private var initailQuestionY = [CGFloat.zero]
+    @State private var initailAnswerFrameX = [CGFloat.zero]
+    @State private var initailAnswerFrameY = [CGFloat.zero]
+    @State private var intersectionIndex = Int()
+    
     
     @State private var start = false
     @State private var sigleMatch = [Bool]()
     @State private var endPage = false
     @State private var ifTime = 0
-    
-    
+    @EnvironmentObject var gameObject: GameObject
+    //
+    func judgeIntersection(objectX: CGFloat, objectY: CGFloat, wordIndex: Int)->Int{
+        let objectRect = CGRect(x: objectX, y: objectY, width: 50, height: 50)
+        for index in (0..<questions[num-1].count){
+            print("c\(wordIndex)")
+            let targetRect = CGRect(x: nowAnswerFrameX[index], y: nowAnswerFrameY[index], width: 50, height: 50)
+            print("\(index),\(answerFrame[index].origin.x),\(answerFrame[index].origin.y)")
+            let interRect = objectRect.intersection(targetRect)
+            if(interRect.width>=20 || interRect.height>=20){
+                if(answers[num-1][index].isEqual(questions[num][wordIndex])){
+                    correctNum+=1
+                    print("correct\(wordIndex)")
+                    return index
+                }//放對位置
+                else{
+                    return 200//放錯
+                }
+                
+            }
+        }
+        
+        return 100//沒放到
+        
+    }
+    //
     func initialGame(){//生成題目跟答案
         answers.removeAll()
         gameTimer.start()
@@ -87,46 +121,75 @@ struct ContentView: View {
             print(questions[i+1])//append的字從陣列1??????????
         }
     }
-    func speak(speakWord:String){
+    func speak(speakWord:String){//說話
         
         let utterance =  AVSpeechUtterance(string: speakWord)
         utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
         let synthesizer = AVSpeechSynthesizer()
         synthesizer.speak(utterance)
     }
-
+    func moveX(qus:CGFloat,ans:CGFloat) -> CGFloat{
+        
+        return ans
+        
+    }
+    func moveY(qus:CGFloat,ans:CGFloat) -> CGFloat{
+        
+        return  -(ans-qus)
+        
+    }
+    /*
+    func adjustPlatePosition(){
+            let evenPositionX = [212, 312, 412, 512]
+            let oddPositionX = [162, 262, 362, 462, 562]
+            for index in 0..<questions[num].count{
+                if(questions[num].count%2==0){
+                    gameObject.plates[index].positionX = CGFloat(evenPositionX[index])
+                }
+                else{
+                    gameObject.plates[index].positionX = CGFloat(oddPositionX[index])
+                }
+                
+            }   
+        }
+    
+    */
+    
     var body: some View {
+        
       ZStack{
         
         Image("背景2")
             .scaleEffect(0.85)
             .offset(x: 0, y: 40)
-        
-          
-        
+  
         VStack{
             
             if start{
-                HStack{
-                    ForEach(0..<questions[num].count, id: \.self){
+                //timerView(remainTime: gameObject.remainTime)
+                HStack{//生成答案區
+                    ForEach(0..<answers[num-1].count, id: \.self){
                         index in
                         
                         Image("answerIcon")
                             .onLongPressGesture{
-                                speak(speakWord: questions[num][index])
+                                speak(speakWord: answers[num-1][index])
                             }//其實長按有解答嘿嘿
-                            .frame(width:10,height:10)
-                            .padding(30)
+                            .frame(width:5,height:5)
+                            .padding(50)
                             //第幾個字母的位移
                             .scaleEffect(0.5)
+                            //.position(x: (plates[index].positionX)/5, y: (plates[index].positionY))
                             .overlay(
                                 GeometryReader(content: { geometry in
                                     Color.clear
                                         .onAppear(perform: {
-                                            //answerFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
-                                            //print(answerFrame[index])
+                                            
                                             answerFrame[index]=(geometry.frame(in: .global))
-                                            //print(answerFrame[index])/////
+                                            nowAnswerFrameX[index] = answerFrame[index].origin.x
+                                            nowAnswerFrameY[index] = answerFrame[index].origin.y
+                                            print(answerFrame[index].origin.x+newPosition[index].width)///////////
+                                            
                                         })
                                 })
                              )
@@ -144,12 +207,10 @@ struct ContentView: View {
                         Text("\(gameTimer.secondsElapsed)")
                     }else{
                         Text("end")
-                        //endPage = true
                     }
-                    
                 }
                 
-                HStack{
+                HStack{//生成題目
                     ForEach(0..<questions[num].count, id: \.self){
                         
                         index in
@@ -159,32 +220,53 @@ struct ContentView: View {
                             .frame(width:50,height:50)
                             //第幾個字母的位移
                             .scaleEffect(0.5)
-                            .offset(offsets[index])
-                            .gesture(DragGesture()
+                            .offset(x:offsets[index].width,y:offsets[index].height)
+                            .gesture(
+                                DragGesture()
                                         .onChanged(
                                             {value in
                                             
                                             offsets[index].width = newPosition[index].width + value.translation.width
-                                            //print(offsets[index].width)
                                             offsets[index].height = newPosition[index].height + value.translation.height
-                                            //print(offsets[index].height)
+                                            print(offsets[index].width,offsets[index].height)
                                             
                                         })
-                                        .onEnded({value in newPosition[index] = offsets[index]
+                                        .onEnded({value in
+                                            
+                                            newPosition[index] = offsets[index]
                                             speak(speakWord: questions[num][index])
-                                            if questionFrame[index].intersects(answerFrame[index]){
-                                                //print("ya\(index)")
-                                                //print(questionFrame[index])
-                                               // print(answerFrame[index])
+                                            nowQuestionFrameX[index] = questionFrame[index].origin.x+newPosition[index].width
+                                            nowQuestionFrameY[index] = questionFrame[index].origin.y+newPosition[index].height
+                                            //print(nowQuestionFrameX[index],nowQuestionFrameY[index])
+                                            
+                                            if correctNum < questions[num].count{//還沒完全答對的話
+                                                
+                                                intersectionIndex = judgeIntersection(objectX: nowQuestionFrameX[index],objectY: nowQuestionFrameY[index],wordIndex: index)
+                                                if intersectionIndex == 200||intersectionIndex == 100{//沒有相交
+                                                    offsets[index].width = CGFloat.zero
+                                                    offsets[index].height = CGFloat.zero
+                                                    
+                                                    
+                                                }else{//有相交
+                                                    offsets[index].width = 56.5
+                                                        //-moveX(qus: nowQuestionFrameX[index], ans: answerFrame[intersectionIndex].origin.x)
+                                                    offsets[index].width = -moveY(qus: nowQuestionFrameY[index], ans: answerFrame[intersectionIndex].origin.y)
+                                                    newPosition[index] = offsets[index]
+                                                    print("ya\(intersectionIndex)")
+                                                    correctNum += 1
+                                                    
+                                                }
                                             }
+                                            
+                                            
                                         }))
                             .overlay(
                                 GeometryReader(content: { geometry in
                                     Color.clear
                                         .onAppear(perform: {
-                                            //questionFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
-                                            print(questionFrame[index])
+                                        
                                             questionFrame[index]=(geometry.frame(in: .global))
+                                            //print(questionFrame[index].origin.x+newPosition[index].width)
                                             print(questionFrame[index])
                                            
                                         })
@@ -205,7 +287,10 @@ struct ContentView: View {
                     questionFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
                     offsets = [CGSize](repeating: CGSize.zero, count: questions[num].count+1)
                     newPosition = [CGSize](repeating: CGSize.zero, count: questions[num].count+1)
-                    
+                    nowAnswerFrameX = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
+                    nowAnswerFrameY = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
+                    nowQuestionFrameX = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
+                    nowQuestionFrameY = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
                     
                 }, label: {Text("開始計時")})
                 Button(action: {
@@ -221,8 +306,10 @@ struct ContentView: View {
                     questionFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
                     offsets = [CGSize](repeating: CGSize.zero, count: questions[num].count+1)
                     newPosition = [CGSize](repeating: CGSize.zero, count: questions[num].count+1)
-                    
-                    
+                    nowAnswerFrameX = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
+                    nowAnswerFrameY = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
+                    nowQuestionFrameX = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
+                    nowQuestionFrameY = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
                 
                 }, label: {Text("再來")})
                 .sheet(isPresented: $endPage, content:{
