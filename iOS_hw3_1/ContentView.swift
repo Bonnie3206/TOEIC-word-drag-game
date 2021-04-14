@@ -245,11 +245,10 @@ struct ContentView: View {
                                                 if intersectionIndex == 200||intersectionIndex == 100{//沒有相交
                                                     offsets[index].width = CGFloat.zero
                                                     offsets[index].height = CGFloat.zero
-                                                    
+                                                    newPosition[index] = offsets[index]
                                                     
                                                 }else{//有相交
-                                                    offsets[index].width = 56.5
-                                                        //-moveX(qus: nowQuestionFrameX[index], ans: answerFrame[intersectionIndex].origin.x)
+                                                    offsets[index].width = -moveX(qus: nowQuestionFrameX[index], ans: answerFrame[intersectionIndex].origin.x)
                                                     offsets[index].width = -moveY(qus: nowQuestionFrameY[index], ans: answerFrame[intersectionIndex].origin.y)
                                                     newPosition[index] = offsets[index]
                                                     print("ya\(intersectionIndex)")
