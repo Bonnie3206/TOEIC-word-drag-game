@@ -76,7 +76,7 @@ struct ContentView: View {
             let targetRect = CGRect(x: nowAnswerFrameX[index], y: nowAnswerFrameY[index], width: 50, height: 50)
             print("\(index),\(answerFrame[index].origin.x),\(answerFrame[index].origin.y)")
             let interRect = objectRect.intersection(targetRect)
-            if(interRect.width>=20 || interRect.height>=20){
+            if(interRect.width>=10 || interRect.height>=10){
                 if(answers[num-1][index].isEqual(questions[num][wordIndex])){
                     correctNum+=1
                     print("correct\(wordIndex)")
@@ -138,22 +138,7 @@ struct ContentView: View {
         return  -(ans-qus)
         
     }
-    /*
-    func adjustPlatePosition(){
-            let evenPositionX = [212, 312, 412, 512]
-            let oddPositionX = [162, 262, 362, 462, 562]
-            for index in 0..<questions[num].count{
-                if(questions[num].count%2==0){
-                    gameObject.plates[index].positionX = CGFloat(evenPositionX[index])
-                }
-                else{
-                    gameObject.plates[index].positionX = CGFloat(oddPositionX[index])
-                }
-                
-            }   
-        }
-    
-    */
+   
     
     var body: some View {
         
@@ -175,10 +160,12 @@ struct ContentView: View {
                             .onLongPressGesture{
                                 speak(speakWord: answers[num-1][index])
                             }//其實長按有解答嘿嘿
-                            .frame(width:5,height:5)
                             .padding(50)
-                            //第幾個字母的位移
                             .scaleEffect(0.5)
+                            .frame(width:100,height:100)
+                            
+                            //第幾個字母的位移
+                           
                             //.position(x: (plates[index].positionX)/5, y: (plates[index].positionY))
                             .overlay(
                                 GeometryReader(content: { geometry in
@@ -235,8 +222,8 @@ struct ContentView: View {
                                             
                                             newPosition[index] = offsets[index]
                                             speak(speakWord: questions[num][index])
-                                            nowQuestionFrameX[index] = questionFrame[index].origin.x+newPosition[index].width
-                                            nowQuestionFrameY[index] = questionFrame[index].origin.y+newPosition[index].height
+                                            nowQuestionFrameX[index] = questionFrame[index].origin.x+newPosition[index].width//移動後座標
+                                            nowQuestionFrameY[index] = questionFrame[index].origin.y+newPosition[index].height//移動後座標
                                             //print(nowQuestionFrameX[index],nowQuestionFrameY[index])
                                             
                                             if correctNum < questions[num].count{//還沒完全答對的話
@@ -248,8 +235,8 @@ struct ContentView: View {
                                                     newPosition[index] = offsets[index]
                                                     
                                                 }else{//有相交
-                                                    offsets[index].width = -moveX(qus: nowQuestionFrameX[index], ans: answerFrame[intersectionIndex].origin.x)
-                                                    offsets[index].width = -moveY(qus: nowQuestionFrameY[index], ans: answerFrame[intersectionIndex].origin.y)
+                                                    offsets[index].width = -moveX(qus: questionFrame[index].origin.x, ans: answerFrame[intersectionIndex].origin.x)
+                                                    offsets[index].height = -moveY(qus: questionFrame[index].origin.y, ans: answerFrame[intersectionIndex].origin.y)
                                                     newPosition[index] = offsets[index]
                                                     print("ya\(intersectionIndex)")
                                                     correctNum += 1
