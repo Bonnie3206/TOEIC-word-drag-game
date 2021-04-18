@@ -68,18 +68,21 @@ struct ContentView: View {
     @State private var endPage = false
     @State private var ifTime = 0
     @EnvironmentObject var gameObject: GameObject
+    @State private var score = 0
     //
     func judgeIntersection(objectX: CGFloat, objectY: CGFloat, wordIndex: Int)->Int{
-        let objectRect = CGRect(x: objectX, y: objectY, width: 50, height: 50)
-        for index in (0..<questions[num-1].count){
+        let objectRect = CGRect(x: objectX, y: objectY, width: 100, height: 100)
+        for index in (0..<answers[num-1].count){
             print("c\(wordIndex)")
-            let targetRect = CGRect(x: nowAnswerFrameX[index], y: nowAnswerFrameY[index], width: 50, height: 50)
+            let targetRect = CGRect(x: nowAnswerFrameX[index], y: nowAnswerFrameY[index], width: 100, height: 100)
             print("\(index),\(answerFrame[index].origin.x),\(answerFrame[index].origin.y)")
             let interRect = objectRect.intersection(targetRect)
-            if(interRect.width>=10 || interRect.height>=10){
+            if(interRect.width>=1 || interRect.height>=1){
                 if(answers[num-1][index].isEqual(questions[num][wordIndex])){
-                    correctNum+=1
-                    print("correct\(wordIndex)")
+                    
+                    print("correct\(index)")
+                    print("correct\(correctNum)")
+                    
                     return index
                 }//放對位置
                 else{
@@ -128,7 +131,7 @@ struct ContentView: View {
         let synthesizer = AVSpeechSynthesizer()
         synthesizer.speak(utterance)
     }
-    func moveX(qus:CGFloat,ans:CGFloat) -> CGFloat{
+    func moveX(qus:CGFloat,ans:CGFloat) -> CGFloat{//單字跟答案匡的距離
         
         return -(ans-qus)
         
@@ -160,13 +163,8 @@ struct ContentView: View {
                             .onLongPressGesture{
                                 speak(speakWord: answers[num-1][index])
                             }//其實長按有解答嘿嘿
-                            .padding(50)
                             .scaleEffect(0.5)
-                            .frame(width:100,height:100)
-                            
-                            //第幾個字母的位移
-                           
-                            //.position(x: (plates[index].positionX)/5, y: (plates[index].positionY))
+                            .frame(width:100,height:100)//第幾個字母的位移
                             .overlay(
                                 GeometryReader(content: { geometry in
                                     Color.clear
@@ -185,7 +183,7 @@ struct ContentView: View {
                 HStack{
                     
                     Image("食物\(num)")//////為何是從1開始
-                        .scaleEffect(0.5)
+                        .scaleEffect(0.8)
                         .frame(width:200,height:200)
                         .onTapGesture{
                             speak(speakWord: vocabulary[num-1])
@@ -242,6 +240,10 @@ struct ContentView: View {
                                                     correctNum += 1
                                                     
                                                 }
+                                            }else{
+                                                if ifTime > 20{
+                                                    
+                                                }
                                             }
                                             
                                             
@@ -282,7 +284,7 @@ struct ContentView: View {
                 Button(action: {
                     
                     ifTime = gameTimer.secondsElapsed
-                    if ifTime > 5{
+                    if ifTime > 20{
                         endPage = true
                     }
                     speak(speakWord: vocabulary[num])
