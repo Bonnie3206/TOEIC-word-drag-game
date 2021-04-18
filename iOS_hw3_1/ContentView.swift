@@ -234,7 +234,7 @@ struct ContentView: View {
                                                     offsets[index].height = CGFloat.zero
                                                     newPosition[index] = offsets[index]
                                                     
-                                                }else{//有相交
+                                                }else{//有相交/
                                                     offsets[index].width = -moveX(qus: questionFrame[index].origin.x, ans: answerFrame[intersectionIndex].origin.x)
                                                     offsets[index].height = -moveY(qus: questionFrame[index].origin.y, ans: answerFrame[intersectionIndex].origin.y)
                                                     newPosition[index] = offsets[index]
