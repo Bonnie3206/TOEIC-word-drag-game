@@ -234,7 +234,7 @@ struct ContentView: View {
                                             nowQuestionFrameY[index] = questionFrame[index].origin.y+newPosition[index].height//移動後座標
                                             //print(nowQuestionFrameX[index],nowQuestionFrameY[index])
                                             
-                                            if correctNum < questions[num].count{//還沒完全答對的話/
+                                            if correctNum < questions[num].count{//還沒完全答對的話
                                                 
                                                 intersectionIndex = judgeIntersection(objectX: nowQuestionFrameX[index],objectY: nowQuestionFrameY[index],wordIndex: index)
                                                 if intersectionIndex == 200||intersectionIndex == 100{//沒有相交
