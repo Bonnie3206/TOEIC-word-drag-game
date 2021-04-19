@@ -12,19 +12,23 @@ struct endPageView: View {
     @State private var lastName = ""
         
     var body: some View {
-        List {
-            TextField("First name", text: $firstName)
-            TextField("Last name", text: $lastName)
-            Button(action: {
-                
-            }) {
-                HStack {
-                    Image(systemName: "plus.circle.fill")
-                    Text("add phone")
+        VStack{
+            //Text(score)
+            List {
+                TextField("First name", text: $firstName)
+                TextField("Last name", text: $lastName)
+                Button(action: {
+                    
+                }) {
+                    HStack {
+                        Image(systemName: "plus.circle.fill")
+                        Text("add phone")
+                    }
                 }
             }
+            .listStyle(GroupedListStyle())
         }
-        .listStyle(GroupedListStyle())
+        
     }
 }
 

@@ -38,7 +38,7 @@ class GameTimer: ObservableObject {
 struct ContentView: View {
     
     
-    
+    @State public var score = 0
     @StateObject var gameTimer = GameTimer()
     @State private var num = 0
     @State private var offsets = [CGSize.zero]
@@ -61,6 +61,7 @@ struct ContentView: View {
     @State private var initailAnswerFrameX = [CGFloat.zero]
     @State private var initailAnswerFrameY = [CGFloat.zero]
     @State private var intersectionIndex = Int()
+    @State private var gameOverTime = 60
     
     
     @State private var start = false
@@ -68,12 +69,13 @@ struct ContentView: View {
     @State private var endPage = false
     @State private var ifTime = 0
     @EnvironmentObject var gameObject: GameObject
-    @State private var score = 0
+    
     //
     func judgeIntersection(objectX: CGFloat, objectY: CGFloat, wordIndex: Int)->Int{
         let objectRect = CGRect(x: objectX, y: objectY, width: 100, height: 100)
         for index in (0..<answers[num-1].count){
-            print("c\(wordIndex)")
+            print(answers[num-1].count)
+            //print("c\(wordIndex)")
             let targetRect = CGRect(x: nowAnswerFrameX[index], y: nowAnswerFrameY[index], width: 100, height: 100)
             print("\(index),\(answerFrame[index].origin.x),\(answerFrame[index].origin.y)")
             let interRect = objectRect.intersection(targetRect)
@@ -81,7 +83,7 @@ struct ContentView: View {
                 if(answers[num-1][index].isEqual(questions[num][wordIndex])){
                     
                     print("correct\(index)")
-                    print("correct\(correctNum)")
+                    print("correctNum\(correctNum)")
                     
                     return index
                 }//放對位置
@@ -155,18 +157,23 @@ struct ContentView: View {
             
             if start{
                 //timerView(remainTime: gameObject.remainTime)
-                HStack{//生成答案區
+ //生成答案區
+                HStack{
                     ForEach(0..<answers[num-1].count, id: \.self){
                         index in
                         
                         Image("answerIcon")
                             .onLongPressGesture{
                                 speak(speakWord: answers[num-1][index])
+                                print(answerFrame[index].origin.x+newPosition[index].width)
                             }//其實長按有解答嘿嘿
+                            
                             .scaleEffect(0.5)
                             .frame(width:100,height:100)//第幾個字母的位移
+                            
                             .overlay(
                                 GeometryReader(content: { geometry in
+                                    
                                     Color.clear
                                         .onAppear(perform: {
                                             
@@ -178,9 +185,12 @@ struct ContentView: View {
                                         })
                                 })
                              )
+                            
                     }
                 }
                 HStack{
+//圖片
+                    Text("\(score)")
                     
                     Image("食物\(num)")//////為何是從1開始
                         .scaleEffect(0.8)
@@ -188,14 +198,14 @@ struct ContentView: View {
                         .onTapGesture{
                             speak(speakWord: vocabulary[num-1])
                         }
-                    if gameTimer.secondsElapsed < 5{
+                    if gameTimer.secondsElapsed < gameOverTime{
                         Text("\(gameTimer.secondsElapsed)")
                     }else{
                         Text("end")
                     }
                 }
-                
-                HStack{//生成題目
+//生成題目
+                HStack{
                     ForEach(0..<questions[num].count, id: \.self){
                         
                         index in
@@ -238,10 +248,9 @@ struct ContentView: View {
                                                     newPosition[index] = offsets[index]
                                                     print("ya\(intersectionIndex)")
                                                     correctNum += 1
-                                                    
-                                                }
-                                            }else{
-                                                if ifTime > 20{
+                                                    if ifTime < gameOverTime && correctNum  == questions[num].count{
+                                                        score+=10
+                                                    }
                                                     
                                                 }
                                             }
@@ -267,6 +276,10 @@ struct ContentView: View {
             }
             HStack{
                 Button(action:{
+                    ifTime = gameTimer.secondsElapsed
+                    if ifTime > 60{
+                        endPage = true
+                    }
                     initialGame()
                     speak(speakWord: vocabulary[num])
                     start = true
@@ -284,7 +297,7 @@ struct ContentView: View {
                 Button(action: {
                     
                     ifTime = gameTimer.secondsElapsed
-                    if ifTime > 20{
+                    if ifTime > gameOverTime{
                         endPage = true
                     }
                     speak(speakWord: vocabulary[num])
@@ -298,6 +311,7 @@ struct ContentView: View {
                     nowAnswerFrameY = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
                     nowQuestionFrameX = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
                     nowQuestionFrameY = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
+
                 
                 }, label: {Text("再來")})
                 .sheet(isPresented: $endPage, content:{
