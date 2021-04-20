@@ -5,7 +5,8 @@
 //  Created by CK on 2021/4/7.
 //
 /*
- 1. 加入背景音樂後常有斷點
+ 1.  withAnimation
+ 2. 
  */
 import SwiftUI
 import AVFoundation
@@ -69,6 +70,7 @@ struct ContentView: View {
     @State private var endPage = false
     @State private var ifTime = 0
     @EnvironmentObject var gameObject: GameObject
+    @State private var timeBar = CGSize.zero
     
     //
     func judgeIntersection(objectX: CGFloat, objectY: CGFloat, wordIndex: Int)->Int{
@@ -143,6 +145,13 @@ struct ContentView: View {
         return  -(ans-qus)
         
     }
+    func updateFrame(geometry: GeometryProxy, index: Int) {
+        
+        answerFrame[index]=(geometry.frame(in: .global))
+        nowAnswerFrameX[index] = answerFrame[index].origin.x
+        nowAnswerFrameY[index] = answerFrame[index].origin.y
+        print(answerFrame[index].origin.x+newPosition[index].width)
+      }
    
     
     var body: some View {
@@ -155,9 +164,11 @@ struct ContentView: View {
   
         VStack{
             
+            
             if start{
                 //timerView(remainTime: gameObject.remainTime)
  //生成答案區
+                
                 HStack{
                     ForEach(0..<answers[num-1].count, id: \.self){
                         index in
@@ -174,15 +185,9 @@ struct ContentView: View {
                             .overlay(
                                 GeometryReader(content: { geometry in
                                     
+                                    let _ = updateFrame(geometry: geometry, index: index)
                                     Color.clear
-                                        .onAppear(perform: {
-                                            
-                                            answerFrame[index]=(geometry.frame(in: .global))
-                                            nowAnswerFrameX[index] = answerFrame[index].origin.x
-                                            nowAnswerFrameY[index] = answerFrame[index].origin.y
-                                            print(answerFrame[index].origin.x+newPosition[index].width)///////////
-                                            
-                                        })
+                                       
                                 })
                              )
                             
@@ -198,6 +203,20 @@ struct ContentView: View {
                         .onTapGesture{
                             speak(speakWord: vocabulary[num-1])
                         }
+                    ZStack{
+                        
+                        Image("進度條")
+                            .scaleEffect(0.4)
+                            .frame(width:20,height:20)
+                        if gameTimer.secondsElapsed < gameOverTime{
+                            Image("跑步")
+                                .scaleEffect(0.1)
+                                .frame(width:3,height:3)
+                                .offset(x:0,y:-65+1.5*CGFloat(gameTimer.secondsElapsed))
+                        }
+                        
+                       
+                    }
                     if gameTimer.secondsElapsed < gameOverTime{
                         Text("\(gameTimer.secondsElapsed)")
                     }else{
@@ -243,9 +262,13 @@ struct ContentView: View {
                                                     newPosition[index] = offsets[index]
                                                     
                                                 }else{//有相交/
-                                                    offsets[index].width = 25-moveX(qus: questionFrame[index].origin.x, ans: answerFrame[intersectionIndex].origin.x)
-                                                    offsets[index].height = 25-moveY(qus: questionFrame[index].origin.y, ans: answerFrame[intersectionIndex].origin.y)
-                                                    newPosition[index] = offsets[index]
+                                                    withAnimation{
+                                                        offsets[index].width = 25-moveX(qus: questionFrame[index].origin.x, ans: answerFrame[intersectionIndex].origin.x)
+                                                                  offsets[index].height = 25-moveY(qus: questionFrame[index].origin.y, ans: answerFrame[intersectionIndex].origin.y)
+                                                                  newPosition[index] = offsets[index]
+                                                    }
+                                                        
+                                                    
                                                     print("ya\(intersectionIndex)")
                                                     correctNum += 1
                                                     if ifTime < gameOverTime && correctNum  == questions[num].count{
@@ -304,9 +327,10 @@ struct ContentView: View {
                     speak(speakWord: vocabulary[num])
                     num+=1
                     start = true
+                    
+                    offsets = [CGSize](repeating: CGSize.zero, count: questions[num].count+1)
                     answerFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
                     questionFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
-                    offsets = [CGSize](repeating: CGSize.zero, count: questions[num].count+1)
                     newPosition = [CGSize](repeating: CGSize.zero, count: questions[num].count+1)
                     nowAnswerFrameX = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
                     nowAnswerFrameY = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
