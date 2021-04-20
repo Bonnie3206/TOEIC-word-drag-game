@@ -168,7 +168,7 @@ struct ContentView: View {
                                 print(answerFrame[index].origin.x+newPosition[index].width)
                             }//其實長按有解答嘿嘿
                             
-                            .scaleEffect(0.5)
+                            .scaleEffect(0.4)
                             .frame(width:100,height:100)//第幾個字母的位移
                             
                             .overlay(
@@ -243,8 +243,8 @@ struct ContentView: View {
                                                     newPosition[index] = offsets[index]
                                                     
                                                 }else{//有相交/
-                                                    offsets[index].width = -moveX(qus: questionFrame[index].origin.x, ans: answerFrame[intersectionIndex].origin.x)
-                                                    offsets[index].height = -moveY(qus: questionFrame[index].origin.y, ans: answerFrame[intersectionIndex].origin.y)
+                                                    offsets[index].width = 25-moveX(qus: questionFrame[index].origin.x, ans: answerFrame[intersectionIndex].origin.x)
+                                                    offsets[index].height = 25-moveY(qus: questionFrame[index].origin.y, ans: answerFrame[intersectionIndex].origin.y)
                                                     newPosition[index] = offsets[index]
                                                     print("ya\(intersectionIndex)")
                                                     correctNum += 1
@@ -260,6 +260,7 @@ struct ContentView: View {
                             .overlay(
                                 GeometryReader(content: { geometry in
                                     Color.clear
+                                        
                                         .onAppear(perform: {
                                         
                                             questionFrame[index]=(geometry.frame(in: .global))
