@@ -11,6 +11,17 @@
 import SwiftUI
 import AVFoundation
 
+class QAData: ObservableObject {
+    
+    var answerFrame = [CGRect.zero]//第一次的絕對位置
+    var questionFrame = [CGRect.zero]
+    var nowAnswerFrameX = [CGFloat.zero]//新的絕對位置
+    var nowAnswerFrameY = [CGFloat.zero]
+    var nowQuestionFrameX = [CGFloat.zero]
+    var nowQuestionFrameY = [CGFloat.zero]
+
+    
+}
 class GameTimer: ObservableObject {
     
     private var frequency = 1.0
@@ -49,18 +60,9 @@ struct ContentView: View {
     //@State private var ShowQuestion = [String]()
     @State private var questions = [[""]]
     @State private var questionNumber = 0
-    //@State private var answerFrame: [CGRect.zero] = [1, 2, 3]
-    @State private var answerFrame = [CGRect.zero]//第一次的絕對位置
-    @State private var questionFrame = [CGRect.zero]
-    @State private var nowAnswerFrameX = [CGFloat.zero]//新的絕對位置
-    @State private var nowAnswerFrameY = [CGFloat.zero]
-    @State private var nowQuestionFrameX = [CGFloat.zero]
-    @State private var nowQuestionFrameY = [CGFloat.zero]
+
     @State private var correctNum = 0
-    @State private var initailQuestionX = [CGFloat.zero]//一開始的絕對位置
-    @State private var initailQuestionY = [CGFloat.zero]
-    @State private var initailAnswerFrameX = [CGFloat.zero]
-    @State private var initailAnswerFrameY = [CGFloat.zero]
+
     @State private var intersectionIndex = Int()
     @State private var gameOverTime = 60
     
@@ -71,15 +73,16 @@ struct ContentView: View {
     @State private var ifTime = 0
     @EnvironmentObject var gameObject: GameObject
     @State private var timeBar = CGSize.zero
-    
+    @State private var totalCorrect = 0
+    var qaData = QAData()
     //
     func judgeIntersection(objectX: CGFloat, objectY: CGFloat, wordIndex: Int)->Int{
         let objectRect = CGRect(x: objectX, y: objectY, width: 100, height: 100)
         for index in (0..<answers[num-1].count){
             print(answers[num-1].count)
             //print("c\(wordIndex)")
-            let targetRect = CGRect(x: nowAnswerFrameX[index], y: nowAnswerFrameY[index], width: 100, height: 100)
-            print("\(index),\(answerFrame[index].origin.x),\(answerFrame[index].origin.y)")
+            let targetRect = CGRect(x: qaData.nowAnswerFrameX[index], y: qaData.nowAnswerFrameY[index], width: 100, height: 100)
+            print("\(index),\(qaData.answerFrame[index].origin.x),\(qaData.answerFrame[index].origin.y)")
             let interRect = objectRect.intersection(targetRect)
             if(interRect.width>=1 || interRect.height>=1){
                 if(answers[num-1][index].isEqual(questions[num][wordIndex])){
@@ -146,12 +149,16 @@ struct ContentView: View {
         
     }
 ///
-    func updateFrame(geometry: GeometryProxy, index: Int) {
+    func updateAnswerFrame(geometry: GeometryProxy, index: Int) {
         
-        answerFrame[index]=(geometry.frame(in: .global))
-        nowAnswerFrameX[index] = answerFrame[index].origin.x
-        nowAnswerFrameY[index] = answerFrame[index].origin.y
-        print(answerFrame[index].origin.x+newPosition[index].width)
+        qaData.answerFrame[index]=(geometry.frame(in: .global))
+        qaData.nowAnswerFrameX[index] = qaData.answerFrame[index].origin.x
+        qaData.nowAnswerFrameY[index] = qaData.answerFrame[index].origin.y
+        print(qaData.answerFrame[index].origin.x+newPosition[index].width)
+      }
+    func updateQuestionFrame(geometry: GeometryProxy, index: Int) {
+        
+        qaData.questionFrame[index]=(geometry.frame(in: .global))
       }
    
     
@@ -177,7 +184,7 @@ struct ContentView: View {
                         Image("answerIcon")
                             .onLongPressGesture{
                                 speak(speakWord: answers[num-1][index])
-                                print(answerFrame[index].origin.x+newPosition[index].width)
+                                print(qaData.answerFrame[index].origin.x+newPosition[index].width)
                             }//其實長按有解答嘿嘿
                             
                             .scaleEffect(0.4)
@@ -186,7 +193,7 @@ struct ContentView: View {
                             .overlay(
                                 GeometryReader(content: { geometry in
                                     
-                                    let _ = updateFrame(geometry: geometry, index: index)
+                                    let _ = updateAnswerFrame(geometry: geometry, index: index)
                                     Color.clear
                                        
                                 })
@@ -250,13 +257,13 @@ struct ContentView: View {
                                             
                                             newPosition[index] = offsets[index]
                                             speak(speakWord: questions[num][index])
-                                            nowQuestionFrameX[index] = questionFrame[index].origin.x+newPosition[index].width//移動後座標
-                                            nowQuestionFrameY[index] = questionFrame[index].origin.y+newPosition[index].height//移動後座標
-                                            //print(nowQuestionFrameX[index],nowQuestionFrameY[index])
+                                            qaData.nowQuestionFrameX[index] = qaData.questionFrame[index].origin.x+newPosition[index].width//移動後座標
+                                            qaData.nowQuestionFrameY[index] = qaData.questionFrame[index].origin.y+newPosition[index].height//移動後座標
+                                            print(qaData.nowQuestionFrameX[index],qaData.nowQuestionFrameY[index])
                                             
                                             if correctNum < questions[num].count{//還沒完全答對的話/
                                                 
-                                                intersectionIndex = judgeIntersection(objectX: nowQuestionFrameX[index],objectY: nowQuestionFrameY[index],wordIndex: index)
+                                                intersectionIndex = judgeIntersection(objectX: qaData.nowQuestionFrameX[index],objectY: qaData.nowQuestionFrameY[index],wordIndex: index)
                                                 if intersectionIndex == 200||intersectionIndex == 100{//沒有相交
                                                     offsets[index].width = CGFloat.zero
                                                     offsets[index].height = CGFloat.zero
@@ -264,8 +271,8 @@ struct ContentView: View {
                                                     
                                                 }else{//有相交/
                                                     withAnimation{
-                                                        offsets[index].width = 25-moveX(qus: questionFrame[index].origin.x, ans: answerFrame[intersectionIndex].origin.x)
-                                                                  offsets[index].height = 25-moveY(qus: questionFrame[index].origin.y, ans: answerFrame[intersectionIndex].origin.y)
+                                                        offsets[index].width = 25-moveX(qus: qaData.questionFrame[index].origin.x, ans: qaData.answerFrame[intersectionIndex].origin.x)
+                                                        offsets[index].height = 25-moveY(qus: qaData.questionFrame[index].origin.y, ans: qaData.answerFrame[intersectionIndex].origin.y)
                                                                   newPosition[index] = offsets[index]
                                                     }
                                                         
@@ -274,6 +281,8 @@ struct ContentView: View {
                                                     correctNum += 1
                                                     if ifTime < gameOverTime && correctNum  == questions[num].count{
                                                         score+=10
+                                                        totalCorrect += 1
+                                                        correctNum = 0
                                                     }
                                                     
                                                 }
@@ -283,13 +292,19 @@ struct ContentView: View {
                                         }))
                             .overlay(
                                 GeometryReader(content: { geometry in
+                                    
+                                    let _ = updateQuestionFrame(geometry: geometry, index: index)
+                                    Color.clear
+                                       
+                                })
+                             )
+                            .overlay(
+                                GeometryReader(content: { geometry in
                                     Color.clear
                                         
                                         .onAppear(perform: {
                                         
-                                            questionFrame[index]=(geometry.frame(in: .global))
-                                            //print(questionFrame[index].origin.x+newPosition[index].width)
-                                            print(questionFrame[index])
+                                            
                                            
                                         })
                                 })
@@ -309,14 +324,14 @@ struct ContentView: View {
                     speak(speakWord: vocabulary[num])
                     start = true
                     num+=1
-                    answerFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
-                    questionFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
+                    qaData.answerFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
+                    qaData.questionFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
                     offsets = [CGSize](repeating: CGSize.zero, count: questions[num].count+1)
                     newPosition = [CGSize](repeating: CGSize.zero, count: questions[num].count+1)
-                    nowAnswerFrameX = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
-                    nowAnswerFrameY = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
-                    nowQuestionFrameX = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
-                    nowQuestionFrameY = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
+                    qaData.nowAnswerFrameX = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
+                    qaData.nowAnswerFrameY = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
+                    qaData.nowQuestionFrameX = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
+                    qaData.nowQuestionFrameY = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
                     
                 }, label: {Text("開始計時")})
                 Button(action: {
@@ -330,13 +345,13 @@ struct ContentView: View {
                     start = true
                     
                     offsets = [CGSize](repeating: CGSize.zero, count: questions[num].count+1)
-                    answerFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
-                    questionFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
+                    qaData.answerFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
+                    qaData.questionFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
                     newPosition = [CGSize](repeating: CGSize.zero, count: questions[num].count+1)
-                    nowAnswerFrameX = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
-                    nowAnswerFrameY = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
-                    nowQuestionFrameX = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
-                    nowQuestionFrameY = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
+                    qaData.nowAnswerFrameX = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
+                    qaData.nowAnswerFrameY = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
+                    qaData.nowQuestionFrameX = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
+                    qaData.nowQuestionFrameY = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
 
                 
                 }, label: {Text("再來")})
