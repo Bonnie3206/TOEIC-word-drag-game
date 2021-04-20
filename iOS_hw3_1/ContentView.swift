@@ -145,6 +145,7 @@ struct ContentView: View {
         return  -(ans-qus)
         
     }
+//
     func updateFrame(geometry: GeometryProxy, index: Int) {
         
         answerFrame[index]=(geometry.frame(in: .global))
