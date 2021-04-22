@@ -53,7 +53,8 @@ class GameTimer: ObservableObject {
 }
 
 struct ContentView: View {
-    
+    //音效
+    var dingPlayer: AVPlayer { AVPlayer.sharedDingPlayer }
     //頁面
     @State private var resultPage = false
     
@@ -289,6 +290,7 @@ struct ContentView: View {
                                                         newPosition[index] = offsets[index]
                                                         
                                                     }else{//有相交/
+                                                        dingPlayer.playFromStart()
                                                         withAnimation{
                                                             offsets[index].width = 25-moveX(qus: qaData.questionFrame[index].origin.x, ans: qaData.answerFrame[intersectionIndex].origin.x)
                                                             offsets[index].height = 25-moveY(qus: qaData.questionFrame[index].origin.y, ans: qaData.answerFrame[intersectionIndex].origin.y)
@@ -297,8 +299,10 @@ struct ContentView: View {
                                                             
                                                         
                                                         print("ya\(intersectionIndex)")
+                                                        
                                                         correctNum += 1
                                                         if correctNum  == questions[num].count{
+                                                            speak(speakWord: vocabulary[num-1])
                                                             score+=10
                                                             totalCorrect += 1
                                                             correctNum = 0

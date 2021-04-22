@@ -10,6 +10,7 @@
 		432C393C262F0C9900BAAEE8 /* ScoreRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432C393B262F0C9900BAAEE8 /* ScoreRecord.swift */; };
 		432C393F262F0E1300BAAEE8 /* ResultPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432C393E262F0E1300BAAEE8 /* ResultPage.swift */; };
 		432C3943262F14C300BAAEE8 /* HighScorePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432C3942262F14C300BAAEE8 /* HighScorePage.swift */; };
+		432C395D263199AA00BAAEE8 /* ding.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 432C395C263199AA00BAAEE8 /* ding.mp3 */; };
 		4343391326230C5500FFC11F /* PuiPui.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4343391226230C5500FFC11F /* PuiPui.mp3 */; };
 		434339192623570A00FFC11F /* AVplayerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434339182623570A00FFC11F /* AVplayerExtension.swift */; };
 		4343391D2623620200FFC11F /* cute.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4343391C2623620200FFC11F /* cute.mp3 */; };
@@ -25,6 +26,7 @@
 		432C393B262F0C9900BAAEE8 /* ScoreRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreRecord.swift; sourceTree = "<group>"; };
 		432C393E262F0E1300BAAEE8 /* ResultPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultPage.swift; sourceTree = "<group>"; };
 		432C3942262F14C300BAAEE8 /* HighScorePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighScorePage.swift; sourceTree = "<group>"; };
+		432C395C263199AA00BAAEE8 /* ding.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ding.mp3; sourceTree = "<group>"; };
 		4343391226230C5500FFC11F /* PuiPui.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = PuiPui.mp3; sourceTree = "<group>"; };
 		434339182623570A00FFC11F /* AVplayerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVplayerExtension.swift; sourceTree = "<group>"; };
 		4343391C2623620200FFC11F /* cute.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = cute.mp3; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 				434B82A7261D55BA0019BEDC /* iOS_hw3_1App.swift */,
 				434B82A9261D55BA0019BEDC /* ContentView.swift */,
 				43B688592620386F0081BF89 /* Question.swift */,
+				432C395C263199AA00BAAEE8 /* ding.mp3 */,
 				4343391C2623620200FFC11F /* cute.mp3 */,
 				4343391226230C5500FFC11F /* PuiPui.mp3 */,
 				434339182623570A00FFC11F /* AVplayerExtension.swift */,
@@ -151,6 +154,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4343391326230C5500FFC11F /* PuiPui.mp3 in Resources */,
+				432C395D263199AA00BAAEE8 /* ding.mp3 in Resources */,
 				434B82AF261D55BD0019BEDC /* Preview Assets.xcassets in Resources */,
 				434B82AC261D55BD0019BEDC /* Assets.xcassets in Resources */,
 				4343391D2623620200FFC11F /* cute.mp3 in Resources */,
