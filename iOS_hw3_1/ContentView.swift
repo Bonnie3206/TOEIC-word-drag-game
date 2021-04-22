@@ -6,7 +6,7 @@
 //
 /*
  1.  withAnimation
- 2. 
+ 2. TextField
  */
 import SwiftUI
 import AVFoundation
@@ -28,6 +28,11 @@ class GameTimer: ObservableObject {
     private var timer: Timer?
     private var startDate: Date?
     @Published var secondsElapsed = 0
+    func getDate() -> Date {////////////
+            startDate = Date()
+            return startDate!
+        }
+    
     func start() {
         secondsElapsed = 0
         startDate = Date()
@@ -49,8 +54,11 @@ class GameTimer: ObservableObject {
 
 struct ContentView: View {
     
+    //頁面
+    @State private var resultPage = false
     
-    @State public var score = 0
+    //位置
+    @State public var score :Int = 0
     @StateObject var gameTimer = GameTimer()
     @State private var num = 0
     @State private var offsets = [CGSize.zero]
@@ -62,20 +70,21 @@ struct ContentView: View {
     @State private var questionNumber = 0
 
     @State private var correctNum = 0
-
-    @State private var intersectionIndex = Int()
-    @State private var gameOverTime = 60
+    @State private var totalCorrect = 0
     
+    @State private var intersectionIndex = Int()
+    @State private var gameOverTime = 20
+    @State private var spendTime = 0
+    @State private var ifTime = 0
+    @State private var timeBar = CGSize.zero
     
     @State private var start = false
     @State private var sigleMatch = [Bool]()
-    @State private var endPage = false
-    @State private var ifTime = 0
-    @EnvironmentObject var gameObject: GameObject
-    @State private var timeBar = CGSize.zero
-    @State private var totalCorrect = 0
+
+    
     var qaData = QAData()
-    //
+
+//是否相交
     func judgeIntersection(objectX: CGFloat, objectY: CGFloat, wordIndex: Int)->Int{
         let objectRect = CGRect(x: objectX, y: objectY, width: 100, height: 100)
         for index in (0..<answers[num-1].count){
@@ -102,7 +111,7 @@ struct ContentView: View {
         return 100//沒放到
         
     }
-    //
+//
     func initialGame(){//生成題目跟答案
         answers.removeAll()
         gameTimer.start()
@@ -203,11 +212,15 @@ struct ContentView: View {
                 }
                 HStack{
 //圖片
-                    Text("\(score)")
+                    VStack{
+                        Text("目前分數：")
+                        Text("\(score)")
+                    }
+                    
                     
                     Image("食物\(num)")//////為何是從1開始
                         .scaleEffect(0.8)
-                        .frame(width:200,height:200)
+                        .frame(width:300,height:200)
                         .onTapGesture{
                             speak(speakWord: vocabulary[num-1])
                         }
@@ -220,13 +233,17 @@ struct ContentView: View {
                             Image("跑步")
                                 .scaleEffect(0.1)
                                 .frame(width:3,height:3)
-                                .offset(x:0,y:-65+1.5*CGFloat(gameTimer.secondsElapsed))
+                                .offset(x:0,y:-65+2.5*CGFloat(gameTimer.secondsElapsed))
                         }
                         
                        
                     }
                     if gameTimer.secondsElapsed < gameOverTime{
-                        Text("\(gameTimer.secondsElapsed)")
+                        VStack{
+                            Text("剩餘時間：")
+                            Text("\(gameOverTime-gameTimer.secondsElapsed)")
+                        }
+                        
                     }else{
                         Text("end")
                     }
@@ -260,33 +277,43 @@ struct ContentView: View {
                                             qaData.nowQuestionFrameX[index] = qaData.questionFrame[index].origin.x+newPosition[index].width//移動後座標
                                             qaData.nowQuestionFrameY[index] = qaData.questionFrame[index].origin.y+newPosition[index].height//移動後座標
                                             print(qaData.nowQuestionFrameX[index],qaData.nowQuestionFrameY[index])
-                                            
-                                            if correctNum < questions[num].count{//還沒完全答對的話/
-                                                
-                                                intersectionIndex = judgeIntersection(objectX: qaData.nowQuestionFrameX[index],objectY: qaData.nowQuestionFrameY[index],wordIndex: index)
-                                                if intersectionIndex == 200||intersectionIndex == 100{//沒有相交
-                                                    offsets[index].width = CGFloat.zero
-                                                    offsets[index].height = CGFloat.zero
-                                                    newPosition[index] = offsets[index]
+            //時間到沒
+                                            if gameTimer.secondsElapsed < gameOverTime && totalCorrect < 10
+                                            {
+                                                if correctNum < questions[num].count{//此題還沒完全答對的話/
                                                     
-                                                }else{//有相交/
-                                                    withAnimation{
-                                                        offsets[index].width = 25-moveX(qus: qaData.questionFrame[index].origin.x, ans: qaData.answerFrame[intersectionIndex].origin.x)
-                                                        offsets[index].height = 25-moveY(qus: qaData.questionFrame[index].origin.y, ans: qaData.answerFrame[intersectionIndex].origin.y)
-                                                                  newPosition[index] = offsets[index]
-                                                    }
+                                                    intersectionIndex = judgeIntersection(objectX: qaData.nowQuestionFrameX[index],objectY: qaData.nowQuestionFrameY[index],wordIndex: index)
+                                                    if intersectionIndex == 200||intersectionIndex == 100{//沒有相交
+                                                        offsets[index].width = CGFloat.zero
+                                                        offsets[index].height = CGFloat.zero
+                                                        newPosition[index] = offsets[index]
                                                         
-                                                    
-                                                    print("ya\(intersectionIndex)")
-                                                    correctNum += 1
-                                                    if ifTime < gameOverTime && correctNum  == questions[num].count{
-                                                        score+=10
-                                                        totalCorrect += 1
-                                                        correctNum = 0
+                                                    }else{//有相交/
+                                                        withAnimation{
+                                                            offsets[index].width = 25-moveX(qus: qaData.questionFrame[index].origin.x, ans: qaData.answerFrame[intersectionIndex].origin.x)
+                                                            offsets[index].height = 25-moveY(qus: qaData.questionFrame[index].origin.y, ans: qaData.answerFrame[intersectionIndex].origin.y)
+                                                                      newPosition[index] = offsets[index]
+                                                        }
+                                                            
+                                                        
+                                                        print("ya\(intersectionIndex)")
+                                                        correctNum += 1
+                                                        if correctNum  == questions[num].count{
+                                                            score+=10
+                                                            totalCorrect += 1
+                                                            correctNum = 0
+                                                        }
+                                                        
                                                     }
-                                                    
                                                 }
+                                                
+                                            }else{
+                                                print("end")
+                                                spendTime = gameTimer.secondsElapsed
+                                                resultPage = true
+                                                
                                             }
+                                            
                                             
                                             
                                         }))
@@ -298,17 +325,7 @@ struct ContentView: View {
                                        
                                 })
                              )
-                            .overlay(
-                                GeometryReader(content: { geometry in
-                                    Color.clear
-                                        
-                                        .onAppear(perform: {
-                                        
-                                            
-                                           
-                                        })
-                                })
-                            )//
+                            
                     }
                 }
 
@@ -317,13 +334,15 @@ struct ContentView: View {
             HStack{
                 Button(action:{
                     ifTime = gameTimer.secondsElapsed
-                    if ifTime > 60{
-                        endPage = true
+                    if ifTime > gameOverTime{
+                        resultPage = true
                     }
+                    num = 0
                     initialGame()
-                    speak(speakWord: vocabulary[num])
                     start = true
                     num+=1
+                    speak(speakWord: vocabulary[num])
+                    
                     qaData.answerFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
                     qaData.questionFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
                     offsets = [CGSize](repeating: CGSize.zero, count: questions[num].count+1)
@@ -336,13 +355,19 @@ struct ContentView: View {
                 }, label: {Text("開始計時")})
                 Button(action: {
                     
-                    ifTime = gameTimer.secondsElapsed
-                    if ifTime > gameOverTime{
-                        endPage = true
+                    if gameTimer.secondsElapsed < gameOverTime && totalCorrect < 10
+                    {
+                        
+                    }else{
+                        print("end")
+                        spendTime = gameTimer.secondsElapsed
+                        resultPage = true
                     }
                     speak(speakWord: vocabulary[num])
                     num+=1
-                    start = true
+                    //start = true
+                    
+                   // gameTimer.nowTime()
                     
                     offsets = [CGSize](repeating: CGSize.zero, count: questions[num].count+1)
                     qaData.answerFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
@@ -352,11 +377,12 @@ struct ContentView: View {
                     qaData.nowAnswerFrameY = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
                     qaData.nowQuestionFrameX = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
                     qaData.nowQuestionFrameY = [CGFloat](repeating: CGFloat.zero, count: questions[num].count+1)
+                    //print(gameTimer.getDate())
 
                 
                 }, label: {Text("再來")})
-                .sheet(isPresented: $endPage, content:{
-               endPageView()
+                .sheet(isPresented: $resultPage, content:{
+                    ResultPage(playerScore: score, playerDate: gameTimer.getDate(),playerTime:Double(spendTime), HighScoreData: HighScoreData())
                 })
             }
         }

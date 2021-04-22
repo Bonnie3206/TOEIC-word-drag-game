@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct endPageView: View {
+    @Binding var  endPage  : Bool
+    
     @State private var firstName = ""
     @State private var lastName = ""
         
@@ -27,6 +29,17 @@ struct endPageView: View {
                 }
             }
             .listStyle(GroupedListStyle())
+            .overlay(
+                Button(action: {endPage = false
+        
+                }
+                       , label:{Image("叉叉")
+                        .resizable()
+                        .frame(width: 50, height: 50)
+                        .padding(60)
+                        
+                       } ),alignment: .topTrailing
+            )
         }
         
     }
@@ -34,6 +47,8 @@ struct endPageView: View {
 
 struct endPageView_Previews: PreviewProvider {
     static var previews: some View {
-        endPageView()
+        endPageView(endPage: .constant(true))
+            .previewLayout(.fixed(width: 844, height: 390))
+            .previewDevice("iPhone 11")
     }
 }
