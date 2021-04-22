@@ -277,7 +277,7 @@ struct ContentView: View {
                                             qaData.nowQuestionFrameX[index] = qaData.questionFrame[index].origin.x+newPosition[index].width//移動後座標
                                             qaData.nowQuestionFrameY[index] = qaData.questionFrame[index].origin.y+newPosition[index].height//移動後座標
                                             print(qaData.nowQuestionFrameX[index],qaData.nowQuestionFrameY[index])
-            //時間到沒
+//時間到沒
                                             if gameTimer.secondsElapsed < gameOverTime && totalCorrect < 10
                                             {
                                                 if correctNum < questions[num].count{//此題還沒完全答對的話/
