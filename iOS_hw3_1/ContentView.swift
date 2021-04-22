@@ -73,7 +73,7 @@ struct ContentView: View {
     @State private var totalCorrect = 0
     
     @State private var intersectionIndex = Int()
-    @State private var gameOverTime = 20
+    @State private var gameOverTime = 60
     @State private var spendTime = 0
     @State private var ifTime = 0
     @State private var timeBar = CGSize.zero
@@ -233,7 +233,7 @@ struct ContentView: View {
                             Image("跑步")
                                 .scaleEffect(0.1)
                                 .frame(width:3,height:3)
-                                .offset(x:0,y:-65+2.5*CGFloat(gameTimer.secondsElapsed))
+                                .offset(x:0,y:-65+1.85*CGFloat(gameTimer.secondsElapsed))
                         }
                         
                        
@@ -337,11 +337,13 @@ struct ContentView: View {
                     if ifTime > gameOverTime{
                         resultPage = true
                     }
-                    num = 0
-                    initialGame()
-                    start = true
+                    //num = 0
                     num+=1
-                    speak(speakWord: vocabulary[num])
+                    start = true
+                    initialGame()
+                    
+                    
+                    speak(speakWord: vocabulary[num-1])
                     
                     qaData.answerFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
                     qaData.questionFrame = [CGRect](repeating: CGRect.zero, count: questions[num].count+1)
