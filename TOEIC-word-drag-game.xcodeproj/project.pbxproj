@@ -30,7 +30,7 @@
 		4343391226230C5500FFC11F /* PuiPui.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = PuiPui.mp3; sourceTree = "<group>"; };
 		434339182623570A00FFC11F /* AVplayerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVplayerExtension.swift; sourceTree = "<group>"; };
 		4343391C2623620200FFC11F /* cute.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = cute.mp3; sourceTree = "<group>"; };
-		434B82A4261D55BA0019BEDC /* iOS_hw3_1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOS_hw3_1.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		434B82A4261D55BA0019BEDC /* TOEIC-word-drag-game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TOEIC-word-drag-game.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		434B82A7261D55BA0019BEDC /* iOS_hw3_1App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOS_hw3_1App.swift; sourceTree = "<group>"; };
 		434B82A9261D55BA0019BEDC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		434B82AB261D55BD0019BEDC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -54,7 +54,7 @@
 		434B829B261D55BA0019BEDC = {
 			isa = PBXGroup;
 			children = (
-				434B82A6261D55BA0019BEDC /* iOS_hw3_1 */,
+				434B82A6261D55BA0019BEDC /* TOEIC-word-drag-game */,
 				434B82A5261D55BA0019BEDC /* Products */,
 			);
 			sourceTree = "<group>";
@@ -62,12 +62,12 @@
 		434B82A5261D55BA0019BEDC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				434B82A4261D55BA0019BEDC /* iOS_hw3_1.app */,
+				434B82A4261D55BA0019BEDC /* TOEIC-word-drag-game.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		434B82A6261D55BA0019BEDC /* iOS_hw3_1 */ = {
+		434B82A6261D55BA0019BEDC /* TOEIC-word-drag-game */ = {
 			isa = PBXGroup;
 			children = (
 				43B6885C2622172D0081BF89 /* SwiftUIView.swift */,
@@ -85,7 +85,7 @@
 				434B82B0261D55BD0019BEDC /* Info.plist */,
 				434B82AD261D55BD0019BEDC /* Preview Content */,
 			);
-			path = iOS_hw3_1;
+			path = "TOEIC-word-drag-game";
 			sourceTree = "<group>";
 		};
 		434B82AD261D55BD0019BEDC /* Preview Content */ = {
@@ -99,9 +99,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		434B82A3261D55BA0019BEDC /* iOS_hw3_1 */ = {
+		434B82A3261D55BA0019BEDC /* TOEIC-word-drag-game */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 434B82B3261D55BD0019BEDC /* Build configuration list for PBXNativeTarget "iOS_hw3_1" */;
+			buildConfigurationList = 434B82B3261D55BD0019BEDC /* Build configuration list for PBXNativeTarget "TOEIC-word-drag-game" */;
 			buildPhases = (
 				434B82A0261D55BA0019BEDC /* Sources */,
 				434B82A1261D55BA0019BEDC /* Frameworks */,
@@ -111,9 +111,9 @@
 			);
 			dependencies = (
 			);
-			name = iOS_hw3_1;
+			name = "TOEIC-word-drag-game";
 			productName = iOS_hw3_1;
-			productReference = 434B82A4261D55BA0019BEDC /* iOS_hw3_1.app */;
+			productReference = 434B82A4261D55BA0019BEDC /* TOEIC-word-drag-game.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -130,7 +130,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 434B829F261D55BA0019BEDC /* Build configuration list for PBXProject "iOS_hw3_1" */;
+			buildConfigurationList = 434B829F261D55BA0019BEDC /* Build configuration list for PBXProject "TOEIC-word-drag-game" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -143,7 +143,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				434B82A3261D55BA0019BEDC /* iOS_hw3_1 */,
+				434B82A3261D55BA0019BEDC /* TOEIC-word-drag-game */,
 			);
 		};
 /* End PBXProject section */
@@ -304,16 +304,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"iOS_hw3_1/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"TOEIC-word-drag-game/Preview Content\"";
 				DEVELOPMENT_TEAM = J886232PB6;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = iOS_hw3_1/Info.plist;
+				INFOPLIST_FILE = "TOEIC-word-drag-game/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "-.iOS-hw3-1";
+				PRODUCT_BUNDLE_IDENTIFIER = "-.TOEIC-word-drag-game";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -326,16 +326,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"iOS_hw3_1/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"TOEIC-word-drag-game/Preview Content\"";
 				DEVELOPMENT_TEAM = J886232PB6;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = iOS_hw3_1/Info.plist;
+				INFOPLIST_FILE = "TOEIC-word-drag-game/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "-.iOS-hw3-1";
+				PRODUCT_BUNDLE_IDENTIFIER = "-.TOEIC-word-drag-game";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -345,7 +345,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		434B829F261D55BA0019BEDC /* Build configuration list for PBXProject "iOS_hw3_1" */ = {
+		434B829F261D55BA0019BEDC /* Build configuration list for PBXProject "TOEIC-word-drag-game" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				434B82B1261D55BD0019BEDC /* Debug */,
@@ -354,7 +354,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		434B82B3261D55BD0019BEDC /* Build configuration list for PBXNativeTarget "iOS_hw3_1" */ = {
+		434B82B3261D55BD0019BEDC /* Build configuration list for PBXNativeTarget "TOEIC-word-drag-game" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				434B82B4261D55BD0019BEDC /* Debug */,
